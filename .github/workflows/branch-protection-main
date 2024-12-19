@@ -1,0 +1,17 @@
+name: Restrict merges to main
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if the source branch is preprod
+        run: |
+          if [ "${{ github.event.pull_request.head.ref }}" != "preprod" ]; then
+            echo "Pull requests to main must come from preprod branch."
+            exit 1
+          fi
